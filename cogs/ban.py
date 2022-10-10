@@ -15,6 +15,7 @@ class BanCommands(commands.Cog):
             return
         else:
             await member.ban(reason=reason)
+
             reasonEmbed = disnake.Embed(
                 title="User Banned",
                 description=f'Succesfully banned {member.mention} for {reason}\n \n ',
@@ -45,6 +46,7 @@ class BanCommands(commands.Cog):
                 text=f"Unbanned by {ctx.author.name}", icon_url='{}'.format(ctx.author.avatar))
             reasonEmbed.set_thumbnail(url=member.display_avatar)
             await ctx.send(embed=reasonEmbed)
+
             
 def setup(bot: commands.Bot):
     bot.add_cog(BanCommands(bot))
