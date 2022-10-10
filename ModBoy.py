@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 # TODO: Add unmute and untimeout embed #
 # TODO: Add unban function #
 
-load_dotenv()
+load_dotenv("secrets.env")
 
 intents = disnake.Intents.default()
 intents.presences = True
@@ -173,4 +173,6 @@ async def timeout(ctx, member: disnake.Member, *, reason="Unspecified reason", d
         await member.timeout(duration=duration, reason=reason)
         await ctx.send(embed=embed(ctx, member, reason, "timeout"))
 
+print(os.environ["token"])
+input()
 bot.run(os.environ["token"])
