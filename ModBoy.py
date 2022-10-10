@@ -173,6 +173,4 @@ async def timeout(ctx, member: disnake.Member, *, reason="Unspecified reason", d
         await member.timeout(duration=duration, reason=reason)
         await ctx.send(embed=embed(ctx, member, reason, "timeout"))
 
-print(os.environ["token"])
-input()
 bot.run(os.environ["token"])
