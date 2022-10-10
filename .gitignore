@@ -130,3 +130,4 @@ dmypy.json
 
 # Discord Stuff
 *.env
+secrets.env
