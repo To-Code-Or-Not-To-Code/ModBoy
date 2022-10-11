@@ -16,8 +16,8 @@ class MuteCommand(commands.Cog):
             await ctx.send(f"You can only moderate members below your role")
             return
         else:
-            duration = timedelta(days=days, hours=hours,
-                                 minutes=minutes, seconds=seconds)
+            duration = timedelta(days=int(days), hours=int(hours),
+                                 minutes=int(minutes), seconds=int(seconds))
             await member.timeout(reason=reason, duration=duration)
             reasonEmbed = disnake.Embed(
                 title="User Muted",
