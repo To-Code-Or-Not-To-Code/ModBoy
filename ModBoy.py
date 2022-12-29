@@ -17,6 +17,6 @@ bot = commands.Bot(command_prefix="/", intents=intents,
 async def on_ready():
     print(f"We have logged in as {bot.user}")
 
-bot.load_extensions("cogs")
+bot.load_extensions("plugins")
 
 bot.run(os.environ["token"])
