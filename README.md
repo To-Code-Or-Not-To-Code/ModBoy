@@ -54,7 +54,7 @@ Navigate to OAuth2 and copy your client ID, save this for later
 
 ### Step 8
 Put your client ID and permission integer into this URL. Go into the page.
-https://discordapp.com/oauth2/authorize?client_id=<CLIENTID>&scope=bot&permissions=<PERMISSIONINT>
+`https://discordapp.com/oauth2/authorize?client_id=<CLIENTID>&scope=bot&permissions=<PERMISSIONINT>`
 
 ### Step 9
 Invite your bot to your server
