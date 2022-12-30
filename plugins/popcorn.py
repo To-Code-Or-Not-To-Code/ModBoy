@@ -3,6 +3,75 @@ from disnake.ext import commands
 import json
 import random
 
+hint = 0
+
+class HighLow(disnake.ui.View):
+    def __init__(self, hint):
+        super().__init__(timeout=None)
+        self.num = random.randint(1, 100)
+        self.hint = hint
+
+    @disnake.ui.button(label="Lower", style=disnake.ButtonStyle.green, custom_id="highlow:lower")
+    async def lower(self, button: disnake.ui.Button, ctx: disnake.MessageInteraction):
+        if self.num < self.hint:
+            gains = random.randint(250, 1000)
+            await ctx.send(f"Congrats! You won :popcorn:{gains}!")
+            with open("popcorn.json", "r+") as file:
+                with open("popcorn.json", "w") as file2:
+                    try:
+                        popcorn = json.loads(file.read())
+                    except:
+                        popcorn = {}
+                    try:
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator]["popcornAmount"] += gains
+                    except:
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator] = {}
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator]["popcornAmount"] = gains
+                    file2.write(json.dumps(popcorn))
+        else:
+            await ctx.send(f"You lost! The number was {self.num}. Your hint was {self.hint}")
+
+    @disnake.ui.button(label="JACKPOT!!!", style=disnake.ButtonStyle.grey, custom_id="highlow:jackpot")
+    async def jackpot(self, button: disnake.ui.Button, ctx: disnake.MessageInteraction):
+        if self.num == self.hint:
+            gains = random.randint(250, 1000)
+            await ctx.send(f"Congrats! You won :popcorn:{gains}!")
+            with open("popcorn.json", "r+") as file:
+                with open("popcorn.json", "w") as file2:
+                    try:
+                        popcorn = json.loads(file.read())
+                    except:
+                        popcorn = {}
+                    try:
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator]["popcornAmount"] += gains
+                    except:
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator] = {}
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator]["popcornAmount"] = gains
+                    file2.write(json.dumps(popcorn))
+        else:
+            await ctx.send(f"You lost! The number was {self.num}. Your hint was {self.hint}")
+    
+    @disnake.ui.button(label="Higher", style=disnake.ButtonStyle.red, custom_id="highlow:higher")
+    async def higher(self, button: disnake.ui.Button, ctx: disnake.MessageInteraction):
+        if self.num > self.hint:
+            gains = random.randint(250, 1000)
+            await ctx.send(f"Congrats! You won :popcorn:{gains}!")
+            with open("popcorn.json", "r+") as file:
+                with open("popcorn.json", "w") as file2:
+                    try:
+                        popcorn = json.loads(file.read())
+                    except:
+                        popcorn = {}
+                    try:
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator]["popcornAmount"] += gains
+                    except:
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator] = {}
+                        popcorn[ctx.author.name + "#" + ctx.author.discriminator]["popcornAmount"] = gains
+                    file2.write(json.dumps(popcorn))
+        else:
+            await ctx.send(f"You lost! The number was {self.num}. Your hint was {self.hint}")
+
+
 
 class PopcornCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -95,19 +164,15 @@ class PopcornCommands(commands.Cog):
             )
 
             await ctx.send(embed=embed)
-    
-    @commands.slash_command(description="Guess the number")
-    async def highlow(self, inter: disnake.ApplicationCommandInteraction):
-        num = random.randint(1, 100)
+
+    @commands.slash_command(description="Get a chance of winning a lot of popcorn by guessing my number")
+    async def highlow(self, ctx):
         hint = random.randint(1, 100)
-        await inter.response.send_message(
-            f"Guess my number\n\nYour hint is {hint}\n\nPress high if you think it is higher than the hint, lower if you think it's lower, and JACKPOT! if you think it is the hint",
-            components=[
-                disnake.ui.Button(label="Lower", style=disnake.ButtonStyle.blurple, custom_id="lower"),
-                disnake.ui.Button(label="JACKPOT!", style=disnake.ButtonStyle.grey, custom_id="jackpot"),
-                disnake.ui.Button(label="Higher", style=disnake.ButtonStyle.blurple, custom_id="higher")
-            ]
+        embed = disnake.Embed(
+            title="Highlow",
+            description=f"Guess my number and I'll give you some popcorn :popcorn:. Your hint is {hint}"
         )
+        await ctx.send(embed=embed, view=HighLow(hint))
 
 def setup(bot):
     bot.add_cog(PopcornCommands(bot))
